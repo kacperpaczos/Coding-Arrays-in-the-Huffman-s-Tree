@@ -9,6 +9,7 @@ sentences = [
     "it is not a good example of a sentence"
 ]
 
+
 # Tokenize and remove punctuation
 def preprocess_sentence(sentence):
     # Split "lib adw one" into ['lib','adw','one'] by space
@@ -16,6 +17,7 @@ def preprocess_sentence(sentence):
     # Check if each token is alphabetic
     tokens = [word.lower() for word in tokens if word.isalpha()]
     return tokens
+
 
 # Create a list of tokens for each sentence
 tokenized_sentences = [preprocess_sentence(sentence) for sentence in sentences]
@@ -31,13 +33,25 @@ for sentence in tokenized_sentences:
 # Get the max frequency
 mostCommonWord = max(counter, key=counter.get)
 
-# Create a tree structure with the most common word as the root using a dictionary
-tree = {mostCommonWord: {}}
+# Getting first word form first line
+reference_word = sentences[0].split()[0]
+
+# Checking all lines
+for sentence in sentences:
+    first_word = sentence.split()[0]
+    if first_word != reference_word:
+        mostCommonWord = "*"
+        tree = {"*": {}}
+        break
+    else:
+        # Create a tree structure with the most common word as the root using a dictionary
+        tree = {mostCommonWord: {}}
 
 for sentence_tokens in tokenized_sentences:
     current_node = tree[mostCommonWord]
     for token in sentence_tokens:
         current_node = current_node.setdefault(token, {})
+
 
 # Helper function to print the tree
 def print_tree(node, depth=0):
@@ -49,6 +63,7 @@ def print_tree(node, depth=0):
     for key, value in node.items():
         print(indent + key)
         print_tree(value, depth + 1)
+
 
 # Print the tree
 print_tree(tree)

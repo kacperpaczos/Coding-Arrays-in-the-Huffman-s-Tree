@@ -42,8 +42,19 @@ class TreeNode:
         self.children = []
 
 
-# Create a tree with the most common word as the root
-root = TreeNode(mostCommonWord)
+# Getting first word form first line
+reference_word = sentences[0].split()[0]
+
+# Checking all lines
+for sentence in sentences:
+    first_word = sentence.split()[0]
+    if first_word != reference_word:
+        # Create a tree with the most common word as the root
+        root = TreeNode("*")
+        break
+    else:
+        # Create a tree with the most common word as the root
+        root = TreeNode(mostCommonWord)
 
 for sentence_tokens in tokenized_sentences:
     current_node = root
@@ -64,7 +75,7 @@ for sentence_tokens in tokenized_sentences:
 def print_tree(node, depth=0):
     indent = ""
     if depth >= 1:
-        indent = ("- " * (depth-1) + "-> ")
+        indent = ("- " * (depth - 1) + "-> ")
     else:
         indent = ("   " * depth)
     print(indent + node.value)
